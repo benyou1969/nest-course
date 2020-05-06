@@ -1,12 +1,17 @@
-import { Module } from '@nestjs/common';
-import { TasksController } from './tasks.controller';
-import { TasksService } from './tasks.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { TaskRepository } from './task.repository';
+import { Module, UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { TypeOrmModule } from "@nestjs/typeorm";
 
+import { TasksController } from "./tasks.controller";
+import { TasksService } from "./tasks.service";
+import { TaskRepository } from "./task.repository";
+import { AuthModule } from "src/auth/auth.module";
+
+@UseGuards(AuthGuard)
 @Module({
   imports: [
-    TypeOrmModule.forFeature([TaskRepository])
+    TypeOrmModule.forFeature([TaskRepository]),
+    AuthModule,
   ],
   controllers: [TasksController],
   providers: [TasksService],
